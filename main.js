@@ -2,6 +2,7 @@
 
 const ERROR_MESSAGE = "Wrong Input，Input again";
 const answer = generateAnswer();
+const history = [];
 let chances = 6;
 
 require('readline').createInterface({
@@ -13,20 +14,33 @@ require('readline').createInterface({
 
 function guessNumberProcess(line) {
     const input = line.split(" ");
-    let end = false;
     if (!verifyInput(input)) {
         console.log(ERROR_MESSAGE);
     } else {
         const result = checkAnswer(input);
-        console.log(`${result.A}A${result.B}B`);
+        const resultStr = `${result.A}A${result.B}B`;
+        history.push({
+            guess: line,
+            result: resultStr
+        });
+        console.log(resultStr);
+        showHistory();
         chances--;
         if (chances === 0 || result.A === 4) {
-            end = true;
+            console.log(`Game over.`);
+            process.exit();
         }
     }
-    if (end) {
-        console.log("Game over.");
-        process.exit();
+}
+
+function showHistory() {
+    if (history.length > 0) {
+        console.log(`History:\n`);
+        history.forEach(
+            guess => console.log(`Guess: ${guess.guess} Result: ${guess.result}`)
+        );
+        console.log(`\n`);
+
     }
 }
 
