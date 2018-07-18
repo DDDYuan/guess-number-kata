@@ -1,24 +1,63 @@
 "use strict";
 
 const ERROR_MESSAGE = "Wrong Input，Input again";
+const answer = generateAnswer();
 
 require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
 }).on('line', function (line) {
-    if (!verifyInput(line)) {
+    const input = line.split(" ");
+    if (!verifyInput(input)) {
         console.log(ERROR_MESSAGE);
     } else {
-        console.log("0A0B");
+        const result = checkAnswer(input);
+        console.log(`${result.A}A${result.B}B`);
     }
 });
 
 function verifyInput(input) {
-    if (new Set(input.split(" ")).size == 4) {
-        return input.split(" ").every(num => {
-            var number = parseInt(num);
+    if (new Set(input).size == 4) {
+        return input.every(num => {
+            const number = parseInt(num);
             return number >= 0 && number <= 9;
         });
     }
     return false;
 }
+
+function generateAnswer() {
+    const generated = [];
+    while (generated.length < 4) {
+        const random = ~~(Math.random() * 10);
+        if (!generated.includes(random)) {
+            generated.push(random);
+        }
+    }
+    return generated;
+}
+
+function checkAnswer(input) {
+    const inputNumbers = input.map(num => parseInt(num));
+    let correctPostion = 0;
+    let correctNumber = 0;
+
+    answer.forEach(
+        answerNum => inputNumbers.forEach(
+            inputNum => {
+                if (answerNum === inputNum) {
+                    if (answer.indexOf(answerNum) === inputNumbers.indexOf(inputNum)) {
+                        correctPostion++;
+                    } else {
+                        correctNumber++;
+                    }
+                }
+            }
+        )
+    );
+
+    return {
+        A: correctPostion,
+        B: correctNumber
+    }
+};
