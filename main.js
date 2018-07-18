@@ -23,7 +23,7 @@ function guessNumberProcess(line) {
             guess: line,
             result: resultStr
         });
-        console.log(resultStr);
+        console.log(`Result:\n ${resultStr}\n`);
         showHistory();
         chances--;
         if (chances === 0 || result.A === 4) {
@@ -35,12 +35,11 @@ function guessNumberProcess(line) {
 
 function showHistory() {
     if (history.length > 0) {
-        console.log(`History:\n`);
+        let historyInfo = `History:\n`;
         history.forEach(
-            guess => console.log(`Guess: ${guess.guess} Result: ${guess.result}`)
+            guess => historyInfo += `Guess: ${guess.guess} Result: ${guess.result}\n`
         );
-        console.log(`\n`);
-
+        console.log(`${historyInfo}==========`);
     }
 }
 
